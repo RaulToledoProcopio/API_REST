@@ -1,74 +1,36 @@
 package com.es.gameStore.controller
 
 import com.es.gameStore.model.Usuario
-import com.es.gameStore.service.TokenService
 import com.es.gameStore.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.AuthenticationException
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/usuarios")
-class UsuarioController {
+class UsuarioController(@Autowired val usuarioService: UsuarioService) {
 
-    @Autowired
-    private lateinit var usuarioService: UsuarioService
-
-    @Autowired
-    private lateinit var authenticationManager: AuthenticationManager
-
-    @Autowired
-    private lateinit var tokenService: TokenService
-
-    /*
-    MÉTODO PARA INSERTAR UN USUARIO
-     */
-    @PostMapping("/register")
-    fun register(
-        @RequestBody newUsuario: Usuario
-    ) : ResponseEntity<Usuario?>? {
-
-        // Comprobación mínima
-        // -> La obviamos por ahora
-
-        // Llamar al UsuarioService para insertar un usuario
-
-
-        // Devolver el usuario insertado
-        return ResponseEntity(null, HttpStatus.CREATED) // Cambiar null por el usuario insertado
-
+    @PostMapping
+    fun crearUsuario(@RequestBody usuario: Usuario): Usuario {
+        return usuarioService.crearUsuario(usuario)
     }
 
-
-    /*
-    MÉTODO (ENDPOINT) PARA HACER UN LOGIN
-     */
-    @PostMapping("/login")
-    fun login(@RequestBody usuario: Usuario) : ResponseEntity<Any>? {
-
-        val authentication: Authentication
-        try {
-            authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(usuario.username, usuario.password))
-        } catch (e: AuthenticationException) {
-            return ResponseEntity(mapOf("mensaje" to "Credenciales incorrectas dude"), HttpStatus.UNAUTHORIZED)
-        }
-
-
-        // SI PASAMOS LA AUTENTICACIÓN, SIGNIFICA QUE ESTAMOS BIEN AUTENTICADOS
-        // PASAMOS A GENERAR EL TOKEN
-        var token = ""
-        token = tokenService.generarToken(authentication)
-
-
-        return ResponseEntity(mapOf("token" to token), HttpStatus.CREATED)
+    @GetMapping
+    fun listarUsuarios(): List<Usuario> {
+        return usuarioService.listarUsuarios()
     }
 
+    @GetMapping("/{id}")
+    fun obtenerUsuario(@PathVariable id: Long): Usuario {
+        return usuarioService.obtenerUsuario(id)
+    }
+
+    @PutMapping("/{id}")
+    fun actualizarUsuario(@PathVariable id: Long, @RequestBody usuario: Usuario): Usuario {
+        return usuarioService.actualizarUsuario(id, usuario)
+    }
+
+    @DeleteMapping("/{id}")
+    fun eliminarUsuario(@PathVariable id: Long) {
+        usuarioService.eliminarUsuario(id)
+    }
 }
