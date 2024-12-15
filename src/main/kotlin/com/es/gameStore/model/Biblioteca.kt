@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Table(name = "biblioteca")
 data class Biblioteca(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var idBiblioteca: Long? = null,
+    var id: Long? = null,
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
