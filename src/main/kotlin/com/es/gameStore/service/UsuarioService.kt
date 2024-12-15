@@ -1,16 +1,12 @@
-package com.es.jwtSecurityKotlin.service
+package com.es.gameStore.service
 
-import com.es.jwtSecurityKotlin.model.Usuario
-import com.es.jwtSecurityKotlin.repository.UsuarioRepository
+import com.es.gameStore.model.Usuario
+import com.es.gameStore.repository.UsuarioRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
-import java.util.*
-import java.util.stream.Collectors
 
 @Service
 class UsuarioService : UserDetailsService {

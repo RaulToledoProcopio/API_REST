@@ -1,4 +1,4 @@
-package com.es.jwtSecurityKotlin.security
+package com.es.gameStore.security
 
 import com.nimbusds.jose.jwk.JWK
 import com.nimbusds.jose.jwk.JWKSet

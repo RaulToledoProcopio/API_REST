@@ -1,4 +1,4 @@
-package com.es.jwtSecurityKotlin.controller
+package com.es.gameStore.controller
 
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -36,7 +36,6 @@ class RutaProtegidaController {
     @GetMapping("/usuario_autenticado")
     fun saludarUsuarioAutenticado(authentication: Authentication) : String {
 
-        // OBJETIVO ES SALUDAR AL USUARIO AUTENTICADO
         return "Hola ${authentication.name}, qué tal?"
     }
 

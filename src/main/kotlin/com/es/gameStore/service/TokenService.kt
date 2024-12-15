@@ -1,20 +1,14 @@
-package com.es.jwtSecurityKotlin.service
+package com.es.gameStore.service
 
-import com.nimbusds.jwt.JWTClaimsSet
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Bean
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.jwt.JwtClaimsSet
 import org.springframework.security.oauth2.jwt.JwtEncoder
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters
 import org.springframework.stereotype.Service
 import java.time.Duration
 import java.time.Instant
-import java.time.LocalDateTime
 import java.util.*
-import java.util.stream.Collectors
-import java.time.temporal.Temporal
 
 @Service
 class TokenService {

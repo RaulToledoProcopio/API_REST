@@ -1,4 +1,4 @@
-package com.es.jwtSecurityKotlin
+package com.es.gameStore
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
