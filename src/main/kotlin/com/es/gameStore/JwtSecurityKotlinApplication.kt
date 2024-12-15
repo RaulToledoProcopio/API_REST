@@ -7,8 +7,8 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @EnableConfigurationProperties(RSAKeysProperties::class)
-class JwtSecurityKotlinApplication
+class GameStoreApplication
 
 fun main(args: Array<String>) {
-	runApplication<JwtSecurityKotlinApplication>(*args)
+	runApplication<GameStoreApplication>(*args)
 }
