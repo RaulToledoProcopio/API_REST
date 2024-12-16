@@ -16,18 +16,18 @@ class TokenService {
     @Autowired
     private lateinit var jwtEncoder: JwtEncoder
 
-    fun generarToken(authentication: Authentication) : String {
+    fun generarToken(authentication: Authentication): String {
 
-        val roles: String = authentication.authorities.joinToString(" ") { it.authority } // Contiene los roles del usuario
+        val roles: List<String> = authentication.authorities.map { it.authority }
 
         val payload: JwtClaimsSet = JwtClaimsSet.builder()
             .issuer("self")
             .issuedAt(Instant.now())
-            .expiresAt(Date().toInstant().plus(Duration.ofHours(1)))
+            .expiresAt(Instant.now().plus(Duration.ofHours(1)))
             .subject(authentication.name)
             .claim("roles", roles)
             .build()
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(payload)).tokenValue;
+        return jwtEncoder.encode(JwtEncoderParameters.from(payload)).tokenValue
     }
 }
