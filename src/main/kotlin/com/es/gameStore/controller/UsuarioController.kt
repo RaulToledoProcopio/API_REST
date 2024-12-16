@@ -6,7 +6,6 @@ import com.es.gameStore.service.UsuarioService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -39,7 +38,7 @@ class UsuarioController {
         val authentication: Authentication
         return try {
             authentication = authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(usuario.nombre, usuario.contraseña)
+                UsernamePasswordAuthenticationToken(usuario.username, usuario.password)
             )
             val token = tokenService.generarToken(authentication)
             ResponseEntity(mapOf("token" to token), HttpStatus.OK)
@@ -49,7 +48,6 @@ class UsuarioController {
     }
 
     // Listar todos los usuarios (solo admins)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     fun getUsuarios(): ResponseEntity<List<Usuario>> {
         val usuarios = usuarioService.getAllUsuarios()
@@ -61,7 +59,6 @@ class UsuarioController {
     }
 
     // Obtener detalles de un usuario específico (cualquier usuario autenticado puede ver su propio perfil o admins pueden ver cualquier perfil)
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.id")
     @GetMapping("/{id}")
     fun getUsuarioById(@PathVariable id: Long): ResponseEntity<Usuario> {
         val usuario = usuarioService.getUsuarioById(id)
@@ -73,7 +70,6 @@ class UsuarioController {
     }
 
     // Actualizar información de un usuario (el propio usuario o admin puede actualizarlo)
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #id == principal.id")
     @PutMapping("/{id}")
     fun updateUsuario(@PathVariable id: Long, @RequestBody usuario: Usuario): ResponseEntity<Usuario> {
         val updatedUsuario = usuarioService.updateUsuario(id, usuario)
@@ -85,7 +81,6 @@ class UsuarioController {
     }
 
     // Eliminar un usuario (solo admins)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     fun deleteUsuarioById(@PathVariable id: Long): ResponseEntity<Any> {
         return if (usuarioService.deleteUsuarioById(id)) {

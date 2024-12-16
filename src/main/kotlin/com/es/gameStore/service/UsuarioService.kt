@@ -26,9 +26,9 @@ class UsuarioService: UserDetailsService {
 
         return User
             .builder()
-            .username(usuario.nombre)
-            .password(usuario.contraseña)
-            .roles(usuario.rol)
+            .username(usuario.username)
+            .password(usuario.password)
+            .roles(usuario.roles)
             .build()
     }
 
@@ -39,12 +39,12 @@ class UsuarioService: UserDetailsService {
             throw Exception("El correo ya existe.")
         }
 
-        val existingUser = usuarioRepository.findByUsername(usuario.nombre!!)
+        val existingUser = usuarioRepository.findByUsername(usuario.username!!)
         if (existingUser.isPresent) {
             throw Exception("El usuario ya existe")
         }
 
-        usuario.contraseña = passwordEncoder.encode(usuario.contraseña)
+        usuario.password = passwordEncoder.encode(usuario.password)
 
         return usuarioRepository.save(usuario)
     }
@@ -64,12 +64,12 @@ class UsuarioService: UserDetailsService {
         val existingUsuario = usuarioRepository.findById(id)
         if (existingUsuario.isPresent) {
             val usuarioToUpdate = existingUsuario.get()
-            usuarioToUpdate.nombre = usuario.nombre ?: usuarioToUpdate.nombre
+            usuarioToUpdate.username = usuario.username ?: usuarioToUpdate.username
             usuarioToUpdate.email = usuario.email ?: usuarioToUpdate.email
-            if (!usuario.contraseña.isNullOrBlank()) {
-                usuarioToUpdate.contraseña = passwordEncoder.encode(usuario.contraseña)
+            if (!usuario.password.isNullOrBlank()) {
+                usuarioToUpdate.password = passwordEncoder.encode(usuario.password)
             }
-            usuarioToUpdate.rol = usuario.rol ?: usuarioToUpdate.rol
+            usuarioToUpdate.roles = usuario.roles ?: usuarioToUpdate.roles
             return usuarioRepository.save(usuarioToUpdate)
         }
         return null

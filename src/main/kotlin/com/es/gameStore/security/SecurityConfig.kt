@@ -50,7 +50,7 @@ class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/videojuegos/{id}").hasRole("ADMIN") // Actualizar videojuego (solo admins)
                 .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").hasRole("ADMIN") // Actualizar usuario (solo admins)
                 .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("ADMIN") // Eliminar usuario (solo admins)
-                .requestMatchers("/usuarios").hasRole("ADMIN") // Listar todos los usuarios (solo admins)
+                .requestMatchers(HttpMethod.GET,"/usuarios").hasRole("ADMIN") // Listar todos los usuarios (solo admins)
                 // Rutas privadas para usuarios autenticados
                 .requestMatchers("/usuarios/{id}").authenticated() // Ver detalles de usuario
                 .requestMatchers("/videojuegos").authenticated() // Ver lista de videojuegos (usuarios autenticados)

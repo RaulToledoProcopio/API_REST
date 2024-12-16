@@ -17,13 +17,13 @@ class BibliotecaService(
     // Agregar un videojuego a la biblioteca de un usuario
     fun agregarVideojuego(biblioteca: Biblioteca): Biblioteca {
         // Verificar si el usuario existe
-        val usuario = usuarioRepository.findById(biblioteca.id_usuario.id_usuario!!)
+        val usuario = usuarioRepository.findById(biblioteca.idUsuario.idUsuario!!)
         if (usuario.isEmpty) {
             throw Exception("Usuario no encontrado")
         }
 
         // Verificar si el videojuego existe
-        val videojuego = videojuegoRepository.findById(biblioteca.id_videojuego.id_Videojuego!!)
+        val videojuego = videojuegoRepository.findById(biblioteca.idVideojuego.idVideojuego!!)
         if (videojuego.isEmpty) {
             throw Exception("Videojuego no encontrado")
         }
@@ -33,9 +33,9 @@ class BibliotecaService(
     }
 
     // Obtener la lista de videojuegos en la biblioteca de un usuario
-    fun obtenerBiblioteca(id_usuario: Long): List<Biblioteca> {
-        return bibliotecaRepository.findByUsuarioId(id_usuario)
-    }
+    /*fun obtenerBiblioteca(id_usuario: Long): List<Biblioteca> {
+        return bibliotecaRepository.findbyidUsuario(id_usuario)
+    }*/
 
     // Eliminar un videojuego de la biblioteca de un usuario
     fun eliminarVideojuego(id_biblioteca: Long) {
@@ -45,6 +45,6 @@ class BibliotecaService(
     // Verificar si el usuario es dueño de la biblioteca
     fun isOwnerOfBiblioteca(id_biblioteca: Long, username: String): Boolean {
         val biblioteca = bibliotecaRepository.findById(id_biblioteca).orElse(null)
-        return biblioteca?.id_usuario?.nombre == username
+        return biblioteca?.idUsuario?.username == username
     }
 }

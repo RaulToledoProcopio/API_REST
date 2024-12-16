@@ -6,17 +6,17 @@ import jakarta.persistence.*
 @Table(name = "usuarios")
 data class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id_usuario: Long? = null,
+    var idUsuario: Long? = null,
 
     @Column(nullable = false, unique = true)
-    var nombre: String,
+    var username: String,
 
     @Column(nullable = false, unique = true)
     var email: String,
 
     @Column(nullable = false)
-    var contraseña: String,
+    var password: String,
 
     @Column(nullable = false)
-    var rol: String,
+    var roles: String,
 )
