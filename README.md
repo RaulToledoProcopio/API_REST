@@ -73,8 +73,8 @@ Esta tabla relaciona a los usuarios con los videojuegos que tienen en su bibliot
 
 ### Endpoints de Biblioteca
 - **POST /biblioteca**  
-  Agregar un videojuego a la biblioteca de un usuario.
+  Agregar un videojuego a la biblioteca de un usuario. (solo admins).
 - **GET /biblioteca/{id_usuario}**  
-  Obtener la lista de videojuegos en la biblioteca de un usuario.
+  Obtener la lista de videojuegos en la biblioteca de un usuario. (solo admins).
 - **DELETE /biblioteca/{id_biblioteca}**  
-  Eliminar un videojuego de la biblioteca de un usuario.
+  Eliminar un videojuego de la biblioteca de un usuario. (solo admins).
