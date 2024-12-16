@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*
 class VideojuegoController(@Autowired val videojuegoService: VideojuegoService) {
 
     // Crear un nuevo videojuego (solo admins)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     fun crearVideojuego(@RequestBody videojuego: Videojuego): ResponseEntity<Videojuego> {
         val nuevoVideojuego = videojuegoService.crearVideojuego(videojuego)
@@ -21,7 +20,6 @@ class VideojuegoController(@Autowired val videojuegoService: VideojuegoService) 
     }
 
     // Listar todos los videojuegos disponibles (cualquier usuario autenticado)
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping
     fun listarVideojuegos(): ResponseEntity<List<Videojuego>> {
         val videojuegos = videojuegoService.listarVideojuegos()
@@ -33,7 +31,6 @@ class VideojuegoController(@Autowired val videojuegoService: VideojuegoService) 
     }
 
     // Obtener detalles de un videojuego específico (cualquier usuario autenticado)
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     fun obtenerVideojuego(@PathVariable id: Long): ResponseEntity<Videojuego> {
         val videojuego = videojuegoService.obtenerVideojuego(id)
@@ -45,7 +42,6 @@ class VideojuegoController(@Autowired val videojuegoService: VideojuegoService) 
     }
 
     // Actualizar información de un videojuego (solo admins)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     fun actualizarVideojuego(@PathVariable id: Long, @RequestBody videojuego: Videojuego): ResponseEntity<Videojuego> {
         val videojuegoActualizado = videojuegoService.actualizarVideojuego(id, videojuego)
@@ -53,7 +49,6 @@ class VideojuegoController(@Autowired val videojuegoService: VideojuegoService) 
     }
 
     // Eliminar un videojuego (solo admins)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     fun eliminarVideojuego(@PathVariable id: Long): ResponseEntity<Void> {
         return try {
