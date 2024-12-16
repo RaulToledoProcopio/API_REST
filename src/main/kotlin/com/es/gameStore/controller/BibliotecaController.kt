@@ -5,7 +5,6 @@ import com.es.gameStore.service.BibliotecaService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*
 class BibliotecaController(@Autowired val bibliotecaService: BibliotecaService) {
 
     // Agregar un videojuego a la biblioteca de un usuario (solo admins)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     fun agregarVideojuego(@RequestBody biblioteca: Biblioteca): ResponseEntity<Biblioteca> {
         val videojuegoAgregado = bibliotecaService.agregarVideojuego(biblioteca)
@@ -21,8 +19,7 @@ class BibliotecaController(@Autowired val bibliotecaService: BibliotecaService) 
     }
 
     // Obtener la lista de videojuegos en la biblioteca de un usuario (cualquier usuario autenticado puede ver su propia biblioteca)
-    /*@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
-    @GetMapping("/{id_usuario}")
+    /*@GetMapping("/{id_usuario}")
     fun obtenerBiblioteca(@PathVariable id_usuario: Long): ResponseEntity<List<Biblioteca>> {
         val biblioteca = bibliotecaService.obtenerBiblioteca(id_usuario)
         return if (biblioteca.isNotEmpty()) {
@@ -33,7 +30,6 @@ class BibliotecaController(@Autowired val bibliotecaService: BibliotecaService) 
     }*/
 
     // Eliminar un videojuego de la biblioteca de un usuario (solo admins o el propio usuario)
-    @PreAuthorize("hasRole('ROLE_ADMIN') or @bibliotecaService.isOwnerOfBiblioteca(#id_biblioteca, principal.username)")
     @DeleteMapping("/{id_biblioteca}")
     fun eliminarVideojuego(@PathVariable id_biblioteca: Long): ResponseEntity<Void> {
         try {
