@@ -9,42 +9,30 @@ import org.springframework.stereotype.Service
 
 @Service
 class BibliotecaService(
-    @Autowired val bibliotecaRepository: BibliotecaRepository,
-    @Autowired val videojuegoRepository: VideojuegoRepository,
-    @Autowired val usuarioRepository: UsuarioRepository
+    @Autowired private val bibliotecaRepository: BibliotecaRepository,
+    @Autowired private val usuarioRepository: UsuarioRepository,
+    @Autowired private val videojuegoRepository: VideojuegoRepository
 ) {
-
-    // Agregar un videojuego a la biblioteca de un usuario
     fun agregarVideojuego(biblioteca: Biblioteca): Biblioteca {
-        // Verificar si el usuario existe
-        val usuario = usuarioRepository.findById(biblioteca.idUsuario.idUsuario!!)
-        if (usuario.isEmpty) {
-            throw Exception("Usuario no encontrado")
-        }
+        // Validar que el usuario exista
+        usuarioRepository.findById(biblioteca.idUsuario.idUsuario!!)
+            .orElseThrow { IllegalArgumentException("Usuario no encontrado") }
 
-        // Verificar si el videojuego existe
-        val videojuego = videojuegoRepository.findById(biblioteca.idVideojuego.idVideojuego!!)
-        if (videojuego.isEmpty) {
-            throw Exception("Videojuego no encontrado")
-        }
+        // Validar que el videojuego exista
+        videojuegoRepository.findById(biblioteca.idVideojuego.idVideojuego!!)
+            .orElseThrow { IllegalArgumentException("Videojuego no encontrado") }
 
-        // Si el usuario y el videojuego existen, se agrega a la biblioteca
+        // Guardar el registro en la tabla "biblioteca"
         return bibliotecaRepository.save(biblioteca)
     }
 
-    // Obtener la lista de videojuegos en la biblioteca de un usuario
-    /*fun obtenerBiblioteca(id_usuario: Long): List<Biblioteca> {
-        return bibliotecaRepository.findbyidUsuario(id_usuario)
-    }*/
-
-    // Eliminar un videojuego de la biblioteca de un usuario
-    fun eliminarVideojuego(id_biblioteca: Long) {
-        bibliotecaRepository.deleteById(id_biblioteca)
+    fun obtenerBiblioteca(idUsuario: Long): List<Biblioteca> {
+        return bibliotecaRepository.findAll().filter { it.idUsuario.idUsuario == idUsuario }
     }
 
-    // Verificar si el usuario es dueño de la biblioteca
-    fun isOwnerOfBiblioteca(id_biblioteca: Long, username: String): Boolean {
-        val biblioteca = bibliotecaRepository.findById(id_biblioteca).orElse(null)
-        return biblioteca?.idUsuario?.username == username
+    fun eliminarVideojuego(idBiblioteca: Long) {
+        val biblioteca = bibliotecaRepository.findById(idBiblioteca)
+            .orElseThrow { IllegalArgumentException("Registro de biblioteca no encontrado") }
+        bibliotecaRepository.delete(biblioteca)
     }
 }

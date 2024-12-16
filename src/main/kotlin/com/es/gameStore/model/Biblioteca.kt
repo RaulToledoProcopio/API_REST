@@ -5,17 +5,16 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "biblioteca")
 data class Biblioteca(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var idBiblioteca: Long? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_biblioteca")
+    val idBiblioteca: Long? = null,
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
-    var idUsuario: Usuario,
+    val idUsuario: Usuario,
 
     @ManyToOne
     @JoinColumn(name = "id_videojuego", nullable = false)
-    var idVideojuego: Videojuego,
-
-    @Column(nullable = false)
-    var fechaAdquisicion: String
+    val idVideojuego: Videojuego
 )

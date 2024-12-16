@@ -19,7 +19,7 @@ class BibliotecaController(@Autowired val bibliotecaService: BibliotecaService) 
     }
 
     // Obtener la lista de videojuegos en la biblioteca de un usuario (cualquier usuario autenticado puede ver su propia biblioteca)
-    /*@GetMapping("/{id_usuario}")
+    @GetMapping("/{id_usuario}")
     fun obtenerBiblioteca(@PathVariable id_usuario: Long): ResponseEntity<List<Biblioteca>> {
         val biblioteca = bibliotecaService.obtenerBiblioteca(id_usuario)
         return if (biblioteca.isNotEmpty()) {
@@ -27,7 +27,7 @@ class BibliotecaController(@Autowired val bibliotecaService: BibliotecaService) 
         } else {
             ResponseEntity(HttpStatus.NO_CONTENT)
         }
-    }*/
+    }
 
     // Eliminar un videojuego de la biblioteca de un usuario (solo admins o el propio usuario)
     @DeleteMapping("/{id_biblioteca}")
