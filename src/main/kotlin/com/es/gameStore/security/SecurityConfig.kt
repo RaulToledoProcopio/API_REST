@@ -37,24 +37,38 @@ class SecurityConfig {
         return http
             .csrf { csrf -> csrf.disable() } // Cross-Site Forgery
             .authorizeHttpRequests { auth -> auth
-                .requestMatchers("/usuarios/login").permitAll()
-                .requestMatchers("/rutas_protegidas/recurso2").permitAll()
-                .requestMatchers("/rutas_protegidas/usuario_autenticado").authenticated()
-                .requestMatchers(HttpMethod.GET,"/rutas_protegidas/recurso/{id}").permitAll()
-                .requestMatchers("/rutas_protegidas/recurso1").authenticated()
-                .requestMatchers(HttpMethod.DELETE,"/rutas_protegidas/recurso/{id}").hasRole("ADMIN")
-                .requestMatchers("/rutas_publicas/**").permitAll()
-                .anyRequest().authenticated()
-            } // Los recursos protegidos y publicos
+                // Rutas públicas
+                .requestMatchers("/usuarios/login", "/usuarios/register").permitAll() // Login y Registro
+                .requestMatchers("/videojuegos").permitAll() // Listar videojuegos disponibles
+                .requestMatchers("/videojuegos/{id}").permitAll() // Obtener videojuego por ID
+                .requestMatchers("/biblioteca/{id_usuario}").permitAll() // Obtener biblioteca por usuario
+                // Rutas protegidas
+                .requestMatchers(HttpMethod.POST, "/videojuegos").hasRole("ADMIN") // Crear videojuego (solo admins)
+                .requestMatchers(HttpMethod.POST, "/biblioteca").hasRole("ADMIN") // Agregar videojuego a biblioteca (solo admins)
+                .requestMatchers(HttpMethod.DELETE, "/videojuegos/{id}").hasRole("ADMIN") // Eliminar videojuego (solo admins)
+                .requestMatchers(HttpMethod.DELETE, "/biblioteca/{id_biblioteca}").hasRole("ADMIN") // Eliminar videojuego de biblioteca (solo admins)
+                .requestMatchers(HttpMethod.PUT, "/videojuegos/{id}").hasRole("ADMIN") // Actualizar videojuego (solo admins)
+                .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").hasRole("ADMIN") // Actualizar usuario (solo admins)
+                .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasRole("ADMIN") // Eliminar usuario (solo admins)
+                .requestMatchers("/usuarios").hasRole("ADMIN") // Listar todos los usuarios (solo admins)
+                // Rutas privadas para usuarios autenticados
+                .requestMatchers("/usuarios/{id}").authenticated() // Ver detalles de usuario
+                .requestMatchers("/videojuegos").authenticated() // Ver lista de videojuegos (usuarios autenticados)
+                .requestMatchers("/videojuegos/{id}").authenticated() // Ver detalles de un videojuego
+                .requestMatchers("/biblioteca/{id_usuario}").authenticated() // Ver biblioteca de un usuario
+                .requestMatchers(HttpMethod.DELETE, "/biblioteca/{id_biblioteca}").authenticated() // Eliminar videojuego de biblioteca
+                .requestMatchers(HttpMethod.POST, "/biblioteca").authenticated() // Agregar videojuego a biblioteca
+                .anyRequest().authenticated() // Cualquier otra ruta requiere autenticación
+            }
+            // Configuración de JWT
             .oauth2ResourceServer { oauth2 -> oauth2.jwt(Customizer.withDefaults()) }
-            .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-            .httpBasic(Customizer.withDefaults())
+            .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) } // Stateless
+            .httpBasic(Customizer.withDefaults()) // Basic Auth
             .build()
-
     }
 
     @Bean
-    fun passwordEncoder() : PasswordEncoder {
+    fun passwordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
 
@@ -84,8 +98,5 @@ class SecurityConfig {
     fun jwtDecoder(): JwtDecoder {
         return NimbusJwtDecoder.withPublicKey(rsaKeys.publicKey).build()
     }
-
-
-
 
 }

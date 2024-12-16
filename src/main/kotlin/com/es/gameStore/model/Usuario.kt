@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Table(name = "usuarios")
 data class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    var id_usuario: Long? = null,
 
     @Column(nullable = false, unique = true)
     var nombre: String,
@@ -17,12 +17,6 @@ data class Usuario(
     @Column(nullable = false)
     var contraseña: String,
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    var rol: Rol = Rol.CLIENTE
+    var rol: String,
 )
-
-enum class Rol {
-    CLIENTE,
-    ADMIN
-}

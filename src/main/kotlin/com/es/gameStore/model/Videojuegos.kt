@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Table(name = "videojuegos")
 data class Videojuego(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null,
+    var id_Videojuego: Long? = null,
 
     @Column(nullable = false)
     var titulo: String,

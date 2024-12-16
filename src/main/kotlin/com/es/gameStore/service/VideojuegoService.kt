@@ -28,7 +28,6 @@ class VideojuegoService(@Autowired private val videojuegoRepository: VideojuegoR
         if (!videojuegoRepository.existsById(id)) {
             throw RuntimeException("Videojuego no encontrado")
         }
-        videojuego.id = id
         return videojuegoRepository.save(videojuego)
     }
 
