@@ -17,15 +17,19 @@ class BibliotecaService(
     // Agregar un videojuego a la biblioteca de un usuario
     fun agregarVideojuego(biblioteca: Biblioteca): Biblioteca {
         // Verificar si el usuario existe
-        val usuario = usuarioRepository.findById(biblioteca.usuario.id)
-        if (!usuario.isPresent) {
-            throw Exception("Usuario no encontrado")
+        val usuario = biblioteca.usuario.id?.let { usuarioRepository.findById(it) }
+        if (usuario != null) {
+            if (!usuario.isPresent) {
+                throw Exception("Usuario no encontrado")
+            }
         }
 
         // Verificar si el videojuego existe
-        val videojuego = videojuegoRepository.findById(biblioteca.videojuego.id)
-        if (!videojuego.isPresent) {
-            throw Exception("Videojuego no encontrado")
+        val videojuego = biblioteca.videojuego.id?.let { videojuegoRepository.findById(it) }
+        if (videojuego != null) {
+            if (!videojuego.isPresent) {
+                throw Exception("Videojuego no encontrado")
+            }
         }
 
         // Si el usuario y el videojuego existen, se agrega a la biblioteca
